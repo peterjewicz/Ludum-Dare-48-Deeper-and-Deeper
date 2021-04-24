@@ -1,8 +1,18 @@
 import Phaser from 'phaser';
+
+// data/functions
+import { DRAW_MODES, FLOOR_START, SQUARE_SIZE } from '../scripts/constants';
+import { draw } from '../scripts/drawing';
+
+// Modules
+import Map from '../modules/Map'
+
+// image imports
 import dirt from '../assets/dirt.png';
 import base from '../assets/base.png';
 import elevator from '../assets/elevator.jpg';
 import shaft from '../assets/shaft.jpg';
+
 
 export default class Game extends Phaser.Scene
 {
@@ -11,6 +21,8 @@ export default class Game extends Phaser.Scene
         super("Game");
         this.loopVar = 0;
         this.scrolled = 0;
+        this.drawMode = DRAW_MODES.ELEVATOR;
+        this.map = new Map();
     }
 
     preload ()
@@ -24,17 +36,10 @@ export default class Game extends Phaser.Scene
     drawDirt () {
       // Our initial drawing of the dirt for our ground
       for (let x = 0; x < 100; x++) {
-        for (let y = 10; y < 100; y++) {
+        for (let y = FLOOR_START / SQUARE_SIZE; y < 100; y++) {
           let xPos = x * 16;
           let yPos = y * 16;
           this.add.image(xPos, yPos, 'dirt').setOrigin(0, 0).setInteractive();
-        //   dirtPatch.on('pointerdown', (pointer) => {
-        //     // console.log(pointer.worldX)
-        //     // console.log(pointer.worldY)
-        //     // // console.log(this.x);
-        //     // // console.log(this.y);
-        //     this.add.image(pointer.worldX, pointer.worldY, 'shaft').setOrigin(0, 0)
-        //   });
         }
       }
 
@@ -79,12 +84,7 @@ export default class Game extends Phaser.Scene
 
         let pointer = this.input.activePointer;
         if (pointer.isDown) {
-
-
-          let xPos = (parseInt (pointer.position.x / 16)) * 16;
-          let yPos = (parseInt (pointer.position.y / 16)) * 16;
-
-          this.add.image(xPos, yPos, 'shaft').setOrigin(0, 0);
+          draw(this, pointer, this.drawMode)
         }
     }
 }
