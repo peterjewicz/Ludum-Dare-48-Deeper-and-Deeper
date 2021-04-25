@@ -98,7 +98,7 @@ export default class Game extends Phaser.Scene
         let pointer = this.input.activePointer;
         if (pointer.isDown) {
           draw(this, pointer, this.drawMode);
-          console.log(this.map.state)
+          // console.log(this.map.state)
         }
 
         if (this.drawMode === DRAW_MODES.ELEVATOR) {
