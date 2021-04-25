@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 
 // data/functions
-import { DRAW_MODES, FLOOR_START, SQUARE_SIZE } from '../scripts/constants';
+import { DRAW_MODES, FLOOR_START, SQUARE_SIZE, MAP_SIZE } from '../scripts/constants';
 import { draw } from '../scripts/drawing';
 
 // Modules
@@ -21,8 +21,8 @@ export default class Game extends Phaser.Scene
         super("Game");
         this.loopVar = 0;
         this.scrolled = 0;
-        this.drawMode = DRAW_MODES.ELEVATOR;
-        this.map = new Map();
+        this.drawMode = DRAW_MODES.SHAFT;
+        this.map = new Map(MAP_SIZE, SQUARE_SIZE);
     }
 
     preload ()
@@ -84,7 +84,8 @@ export default class Game extends Phaser.Scene
 
         let pointer = this.input.activePointer;
         if (pointer.isDown) {
-          draw(this, pointer, this.drawMode)
+          draw(this, pointer, this.drawMode);
+          console.log(this.map.state)
         }
     }
 }
