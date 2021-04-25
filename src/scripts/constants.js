@@ -15,6 +15,11 @@ export const COSTS = {
   SHAFT: 20,
 }
 
+export const MAINTENANCE_COSTS = {
+  ELEVATOR: 5,
+  SHAFT: 1,
+}
+
 // sizes in world units
 export const ELEVATOR_SIZES = {
   x: 3,

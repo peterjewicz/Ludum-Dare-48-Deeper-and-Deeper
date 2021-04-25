@@ -1,7 +1,11 @@
 
 export default class Map {
   constructor(size, single) { // assuming square for now
-    this.state = this.generateMap(size, single)
+    this.state = this.generateMap(size, single);
+
+    // We'll just precount these so we don't have to itterate each loop
+    this.elevators = 0;
+    this.shafts = 0;
   }
 
   generateMap(size, single) {
@@ -19,6 +23,12 @@ export default class Map {
 
   updateMapRep(x, y, val) {
     this.state[y][x] = val;
+
+    if (val === 2) {
+      this.elevators++;
+    } else if (val === 3) {
+      this.shafts++;
+    }
   }
 
   addElementFromMap() {

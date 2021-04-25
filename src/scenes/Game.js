@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 
 // data/functions
-import { DRAW_MODES, FLOOR_START, SQUARE_SIZE, MAP_SIZE } from '../scripts/constants';
+import { DRAW_MODES, FLOOR_START, SQUARE_SIZE, MAP_SIZE, MAINTENANCE_COSTS } from '../scripts/constants';
 import { draw } from '../scripts/drawing';
 
 // Modules
@@ -24,6 +24,7 @@ export default class Game extends Phaser.Scene
         this.drawMode = DRAW_MODES.ELEVATOR;
         this.map = new Map(MAP_SIZE, SQUARE_SIZE);
         this.cash = 1000;
+        this.elapsedTime = 0;
     }
 
     preload ()
@@ -39,13 +40,20 @@ export default class Game extends Phaser.Scene
     }
 
     removeCash(amount) {
-      console.log(amount)
       this.setCash(this.cash - amount);
     }
 
     checkPurchase(amount) {
       return this.cash >= amount;
     }
+
+    calcCashToRemove() {
+      const {shafts, elevators} = this.map;
+
+      // divide elevators by 6 since each building is multiple spaces - would fix this in a real project
+      this.removeCash((shafts * MAINTENANCE_COSTS.SHAFT) + (elevators / 6 * MAINTENANCE_COSTS.ELEVATOR))
+    }
+
 
     setDrawMode(mode) {
       this.drawMode = mode;
@@ -126,5 +134,12 @@ export default class Game extends Phaser.Scene
         }
 
         this.cashText.setText(`$${this.cash}`)
+
+        // every 10 seconds process a maintenence tick
+        this.elapsedTime += delta
+        if(this.elapsedTime > 10000) {
+          this.elapsedTime = 0;
+          this.calcCashToRemove()
+        }
     }
 }
