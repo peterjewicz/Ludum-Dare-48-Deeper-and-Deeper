@@ -10,6 +10,11 @@ export const MAP_ITEMS = {
   shaft: 3,
 }
 
+export const COSTS = {
+  ELEVATOR: 600,
+  SHAFT: 20,
+}
+
 // sizes in world units
 export const ELEVATOR_SIZES = {
   x: 3,
