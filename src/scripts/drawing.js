@@ -13,6 +13,10 @@ const checkElevatorBounds = (x, y) => {
   //check that you have enough money
 }
 
+const checkShaftBounds = (y) => {
+  return y > 144
+}
+
 const isSpaceEmpty = (x, y, map) => {
   return map.state[y][x] === 0
 }
@@ -22,7 +26,7 @@ export const draw = (scene, pointer, mode) => {
   let yPos = (parseInt (pointer.position.y / 16)) * 16;
 
   if (mode === DRAW_MODES.SHAFT) {
-    if (isSpaceEmpty(xPos / 16, yPos / 16, scene.map)) {
+    if (checkShaftBounds(yPos) && isSpaceEmpty(xPos / 16, yPos / 16, scene.map)) {
       scene.add.image(xPos, yPos, 'shaft').setOrigin(0, 0);
       scene.map.updateMapRep(xPos / 16, yPos / 16, 3);
     }

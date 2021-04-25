@@ -21,7 +21,7 @@ export default class Game extends Phaser.Scene
         super("Game");
         this.loopVar = 0;
         this.scrolled = 0;
-        this.drawMode = DRAW_MODES.SHAFT;
+        this.drawMode = DRAW_MODES.ELEVATOR;
         this.map = new Map(MAP_SIZE, SQUARE_SIZE);
     }
 
@@ -31,6 +31,10 @@ export default class Game extends Phaser.Scene
         this.load.image('base', base);
         this.load.image('elevator', elevator);
         this.load.image('shaft', shaft);
+    }
+
+    setDrawMode(mode) {
+      this.drawMode = mode;
     }
 
     drawDirt () {
@@ -57,6 +61,15 @@ export default class Game extends Phaser.Scene
         this.text = this.add.text(0, 0).setText('Click to move').setScrollFactor(0);
         this.text.setShadow(1, 1, '#000000', 2);
 
+        this.elevatorText = this.add.text(310, 0).setText('Elevator').setScrollFactor(0).setShadow(1, 1, '#000000', 5).setInteractive({ useHandCursor: true });
+        this.elevatorText.on('pointerdown', () => {
+          this.setDrawMode(DRAW_MODES.ELEVATOR);
+        })
+
+        this.shaftText = this.add.text(310, 20).setText('Shaft').setScrollFactor(0).setInteractive({ useHandCursor: true });
+        this.shaftText.on('pointerdown', () => {
+          this.setDrawMode(DRAW_MODES.SHAFT);
+        })
         //  Camera controls
         const cursors = this.input.keyboard.createCursorKeys();
 
@@ -86,6 +99,14 @@ export default class Game extends Phaser.Scene
         if (pointer.isDown) {
           draw(this, pointer, this.drawMode);
           console.log(this.map.state)
+        }
+
+        if (this.drawMode === DRAW_MODES.ELEVATOR) {
+          this.elevatorText.setShadow(1, 1, '#000000', 5);
+          this.shaftText.setShadow(0, 0, '#000000', 0);
+        } else {
+          this.shaftText.setShadow(1, 1, '#000000', 5);
+          this.elevatorText.setShadow(0, 0, '#000000', 0);
         }
     }
 }
